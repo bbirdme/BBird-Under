@@ -1,1 +1,1 @@
-BBird Under
+BBird Under WordPress.org theme
