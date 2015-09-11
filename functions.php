@@ -54,6 +54,11 @@ function bbird_under_setup() {
         //  Declare WooCommerce Support
         
          add_theme_support( 'woocommerce' );
+
+        // Apply theme's stylesheet to the visual editor.
+
+         add_editor_style( get_stylesheet_uri() );
+         
 }
 endif; // bbird_under_setup
 add_action( 'after_setup_theme', 'bbird_under_setup' );
@@ -128,6 +133,19 @@ function bbird_under_widgets_init() {
 	register_sidebar( $args );
 }
 add_action( 'widgets_init', 'bbird_under_widgets_init' );
+
+
+/**
+ * Load Google Fonts
+ */
+
+function bbird_under_load_google_fonts() {
+
+wp_enqueue_style( 'bbird-under-google-fonts', '//fonts.googleapis.com/css?family=Oswald:400,300,700', false ); 
+}
+
+add_action( 'wp_enqueue_scripts', 'bbird_under_load_google_fonts' );
+
 
 /**
  * Enqueue scripts and styles.
@@ -246,18 +264,8 @@ class bbird_under_offcanvas_walker extends Walker_Nav_Menu {
 	}
 
 	function start_lvl( &$output, $depth = 0, $args = array() ) {
-		$output .= "\n<ul class=\"left-submenu\">\n<li class=\"back\"><a href=\"#\">". __( 'Back', 'foundationpress' ) ."</a></li>\n";
+		$output .= "\n<ul class=\"left-submenu\">\n<li class=\"back\"><a href=\"#\">". __( 'Back', 'bbird-under' ) ."</a></li>\n";
 	}
-
-}
-
-add_action( 'init', 'bbird_under_add_editor_styles' );
-/**
- * Apply theme's stylesheet to the visual editor.
- */
-function  bbird_under_add_editor_styles() {
-
-    add_editor_style( get_stylesheet_uri() );
 
 }
 
@@ -280,19 +288,20 @@ $tag = ( 'div' === $args['style'] ) ? 'div' : 'li'; ?>
                  
                     <div class="comment-author">
                         
-                        <?php printf( __( '%s' ), sprintf( '<span class="commenter">%s</span>', get_comment_author_link() ) ); ?>
+                        <?php printf( __( '<span class="commenter">%s</span>','bbird-under' ), get_comment_author_link() ) ; ?>
                     </div><!-- .comment-author -->
  
                     <div class="comment-metadata">
                         <a href="<?php echo esc_url( get_comment_link( $comment->comment_ID, $args ) ); ?>">
                             <time datetime="<?php comment_time( 'c' ); ?>">
-                                <?php printf( _x( '%1$s at %2$s', '1: date, 2: time' ), get_comment_date(), get_comment_time() ); ?>
+                                <?php printf( _x( '%1$s at %2$s', '1: date, 2: time', 'bbird-under' ), get_comment_date(), get_comment_time() ); ?>
+                                
                             </time>
                         </a>
                      </div><!-- .comment-metadata -->
  
                     <?php if ( '0' == $comment->comment_approved ) : ?>
-                    <p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'bbird-under'  ); ?></p>
+                    <p class="comment-awaiting-moderation"><?php printf( __( 'Your comment is awaiting moderation.', 'bbird-under'  )); ?></p>
                     <?php endif; ?>
                 </footer><!-- .comment-meta -->
                    <div class="comment-content">
